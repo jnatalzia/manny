@@ -1,8 +1,6 @@
 package gameplay
 
 import (
-	"errors"
-
 	"../mapping"
 	"../types"
 	"../utils"
@@ -10,9 +8,9 @@ import (
 
 type Civilian struct {
 	IsAI       bool
-	Location   types.UnitLocationID
-	MoveIntent types.UnitLocationID
-	Path       []types.UnitLocationID
+	Location   string
+	MoveIntent string
+	Path       []string
 }
 
 func GenerateIntents(civs []*Civilian) {
@@ -31,55 +29,57 @@ func MoveUnits(civs []*Civilian) {
 }
 
 func getPathToNode(
-	locOne types.UnitLocationID,
-	locTwo types.UnitLocationID,
+	locOne string,
+	locTwo string,
 	gameMap *types.Map,
-	path []types.UnitLocationID,
-	visited []types.UnitLocationID,
-) ([]types.UnitLocationID, error) {
+	oldPath []string,
+	oldVisited []string,
+) [][]string {
 	gm := *gameMap
+	options := [][]string{}
+
 	for _, nbr := range gm[locOne].Neighbors {
+		path := make([]string, len(oldPath))
+		copy(path, oldPath)
 		path = append(path, nbr)
 
-		logger.Printf("Current visited: %v", visited)
-
-		if utils.LocationInSlide(nbr, visited) {
+		if utils.LocationInSlice(nbr, oldVisited) {
 			continue
 		}
 
+		visited := make([]string, len(oldVisited))
+		copy(visited, oldVisited)
 		visited = append(visited, nbr)
 		if nbr == locTwo {
-			return path, nil
+			options = append(options, path)
+			continue
 		}
 
-		logger.Printf("Looking farther down the rabbit hole.\nCurrent Path: %v", path)
-		return getPathToNode(nbr, locTwo, gameMap, path, visited)
+		for _, opt := range getPathToNode(nbr, locTwo, gameMap, path, visited) {
+			options = append(options, opt)
+		}
 	}
 
-	logger.Println("Somehow got to the block below the for loop")
-	return path, errors.New("No viable path for current")
+	return options
 }
 
 // Based on a unit's intent, draw a path for them
-func (civ *Civilian) DetermineCivPath(gameMap *types.Map) []types.UnitLocationID {
+func (civ *Civilian) DetermineCivPath(gameMap *types.Map) []string {
 	gm := *gameMap
 
-	possiblePaths := [][]types.UnitLocationID{}
+	possiblePaths := [][]string{}
 
 	for _, neighbor := range gm[civ.Location].Neighbors {
-		pth, err := getPathToNode(neighbor, civ.MoveIntent, gameMap, []types.UnitLocationID{neighbor}, []types.UnitLocationID{neighbor})
-		if err != nil {
-			logger.Printf("No viable path found from %s to %s\n", neighbor, civ.MoveIntent)
-			continue
-		}
+		pthOpts := getPathToNode(neighbor, civ.MoveIntent, gameMap, []string{neighbor}, []string{neighbor})
+
 		possiblePaths = append(
 			possiblePaths,
-			pth,
+			pthOpts...,
 		)
 	}
 
 	logger.Printf("For path from %s to %s the following paths exist:\n", civ.Location, civ.MoveIntent)
-	var shortestPath []types.UnitLocationID
+	var shortestPath []string
 	shortestPathLen := 1000000
 	for _, p := range possiblePaths {
 		logger.Println(p)
@@ -91,10 +91,13 @@ func (civ *Civilian) DetermineCivPath(gameMap *types.Map) []types.UnitLocationID
 			continue
 		}
 
-		if pthLen == shortestPathLen {
-			logger.Printf("Path found with equal %d length route\n", pthLen)
+		if pthLen == shortestPathLen && utils.GetRandomInt(100) <= 50 {
+			logger.Printf("Path found with equal %d length route\n Check passed, replacing\n", pthLen)
+			shortestPath = p
 		}
 	}
+
+	logger.Printf("Chose path %v\n", shortestPath)
 
 	return shortestPath
 }

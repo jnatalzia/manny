@@ -8,7 +8,7 @@ var currentUnits []*Civilian
 var logger = utils.GetLogger()
 
 func BuildCivs() {
-	// locOptions := []types.UnitLocationID{
+	// locOptions := []string{
 	// 	"1",
 	// 	"2",
 	// 	"3",

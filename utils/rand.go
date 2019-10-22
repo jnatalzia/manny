@@ -3,14 +3,16 @@ package utils
 import (
 	"math/rand"
 	"time"
-
-	"../types"
 )
 
 func InitRand() {
 	rand.Seed(time.Now().Unix())
 }
 
-func GetRandomLocID(arr []types.UnitLocationID) types.UnitLocationID {
+func GetRandomLocID(arr []string) string {
 	return arr[rand.Intn(len(arr))]
+}
+
+func GetRandomInt(topBound int) int {
+	return rand.Intn(topBound)
 }

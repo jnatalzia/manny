@@ -1,10 +1,8 @@
 package types
 
-type UnitLocationID string
-
 type Location struct {
-	ID        UnitLocationID
-	Neighbors []UnitLocationID
+	ID        string
+	Neighbors []string
 }
 
-type Map map[UnitLocationID]Location
+type Map map[string]Location

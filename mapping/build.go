@@ -2,34 +2,34 @@ package mapping
 
 import "../types"
 
-var GameMap types.Map = map[types.UnitLocationID]types.Location{
+var GameMap types.Map = map[string]types.Location{
 	"1": types.Location{
 		ID:        "1",
-		Neighbors: []types.UnitLocationID{"2", "4", "5"},
+		Neighbors: []string{"2", "4", "5"},
 	},
 	"2": types.Location{
 		ID:        "2",
-		Neighbors: []types.UnitLocationID{"1"},
+		Neighbors: []string{"1"},
 	},
 	"3": types.Location{
 		ID:        "3",
-		Neighbors: []types.UnitLocationID{"5", "6"},
+		Neighbors: []string{"5", "6"},
 	},
 	"4": types.Location{
 		ID:        "4",
-		Neighbors: []types.UnitLocationID{"1"},
+		Neighbors: []string{"1", "6"},
 	},
 	"5": types.Location{
 		ID:        "5",
-		Neighbors: []types.UnitLocationID{"3", "1"},
+		Neighbors: []string{"3", "1", "6"},
 	},
 	"6": types.Location{
 		ID:        "6",
-		Neighbors: []types.UnitLocationID{"3"},
+		Neighbors: []string{"3", "4", "5"},
 	},
 }
 
-var LocIDs []types.UnitLocationID
+var LocIDs []string
 
 func InitHelperData() {
 	for k := range GameMap {
