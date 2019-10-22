@@ -11,13 +11,12 @@ import (
 func main() {
 	utils.InitRand()
 	mapping.InitHelperData()
-	mapping.BuildCivs()
+	gameplay.BuildCivs()
 
 	// Game Loop
 	for {
-		gameplay.GenerateIntents(mapping.GetCivs())
-
-		gameplay.MoveUnits(mapping.GetCivs())
+		gameplay.GenerateIntents(gameplay.GetCivs())
+		// gameplay.MoveUnits(mapping.GetCivs())
 		time.Sleep(time.Second * 10)
 	}
 }

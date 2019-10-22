@@ -4,7 +4,7 @@ type UnitLocationID string
 
 type Location struct {
 	ID        UnitLocationID
-	Neighbors []string
+	Neighbors []UnitLocationID
 }
 
 type Map map[UnitLocationID]Location
