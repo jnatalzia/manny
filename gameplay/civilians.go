@@ -7,13 +7,15 @@ import (
 )
 
 type Civilian struct {
-	IsAI       bool
-	Location   string
-	MoveIntent string
-	Path       []string
+	ID           string
+	IsAI         bool
+	Location     string
+	MoveIntent   string
+	Path         []string
+	PathPosition int
 }
 
-func GenerateIntents(civs []*Civilian) {
+func GeneratePathing(civs []*Civilian) {
 	for _, civ := range civs {
 		// Generate intent movement using pathing
 		civ.Path = civ.DetermineCivPath(&mapping.GameMap)
@@ -70,34 +72,37 @@ func (civ *Civilian) DetermineCivPath(gameMap *types.Map) []string {
 	possiblePaths := [][]string{}
 
 	for _, neighbor := range gm[civ.Location].Neighbors {
-		pthOpts := getPathToNode(neighbor, civ.MoveIntent, gameMap, []string{neighbor}, []string{neighbor})
+		if neighbor == civ.MoveIntent {
+			possiblePaths = append(
+				possiblePaths,
+				[]string{neighbor},
+			)
+		} else {
+			pthOpts := getPathToNode(neighbor, civ.MoveIntent, gameMap, []string{neighbor}, []string{neighbor})
 
-		possiblePaths = append(
-			possiblePaths,
-			pthOpts...,
-		)
+			possiblePaths = append(
+				possiblePaths,
+				pthOpts...,
+			)
+		}
 	}
 
-	logger.Printf("For path from %s to %s the following paths exist:\n", civ.Location, civ.MoveIntent)
 	var shortestPath []string
 	shortestPathLen := 1000000
 	for _, p := range possiblePaths {
-		logger.Println(p)
 		pthLen := len(p)
 		if pthLen < shortestPathLen {
 			shortestPathLen = pthLen
 			shortestPath = p
-			logger.Printf("Shorter path of length %d found\n", shortestPathLen)
 			continue
 		}
 
 		if pthLen == shortestPathLen && utils.GetRandomInt(100) <= 50 {
-			logger.Printf("Path found with equal %d length route\n Check passed, replacing\n", pthLen)
 			shortestPath = p
 		}
 	}
 
-	logger.Printf("Chose path %v\n", shortestPath)
+	logger.Printf("Chose path %v for going from %s to %s\n", shortestPath, civ.Location, civ.MoveIntent)
 
 	return shortestPath
 }

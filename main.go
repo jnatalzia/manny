@@ -12,11 +12,10 @@ func main() {
 	utils.InitRand()
 	mapping.InitHelperData()
 	gameplay.BuildCivs()
-
+	gameplay.GeneratePathing(gameplay.GetCivs())
 	// Game Loop
 	for {
-		gameplay.GenerateIntents(gameplay.GetCivs())
-		// gameplay.MoveUnits(mapping.GetCivs())
+		gameplay.TakeTurn()
 		time.Sleep(time.Second * 10)
 	}
 }

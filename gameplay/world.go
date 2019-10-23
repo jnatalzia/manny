@@ -6,20 +6,22 @@ import (
 
 var currentUnits []*Civilian
 var logger = utils.GetLogger()
+var locOptions = []string{
+	"1",
+	"2",
+	"3",
+	"4",
+	"5",
+}
 
 func BuildCivs() {
-	// locOptions := []string{
-	// 	"1",
-	// 	"2",
-	// 	"3",
-	// 	"4",
-	// 	"5",
-	// }
-	for i := 0; i < 1; i++ { //10; i++ {
+	for i := 0; i < 10; i++ {
 		currentUnits = append(currentUnits, &Civilian{
-			IsAI:       true,
-			Location:   "1",
-			MoveIntent: "6",
+			ID:           utils.GetGUID(),
+			IsAI:         true,
+			Location:     utils.GetRandomLocID(locOptions),
+			MoveIntent:   utils.GetRandomLocID(locOptions),
+			PathPosition: 0,
 		})
 	}
 
@@ -28,4 +30,21 @@ func BuildCivs() {
 
 func GetCivs() []*Civilian {
 	return currentUnits
+}
+
+func TakeTurn() {
+	for _, c := range currentUnits {
+		c.Location = c.Path[c.PathPosition]
+		c.PathPosition++
+
+		if c.MoveIntent == c.Location {
+			logger.Printf("Civilian arrived at their destination %s\n", c.MoveIntent)
+			logger.Println("Making new intent for civ")
+			c.PathPosition = 0
+			c.MoveIntent = utils.GetRandomLocID(locOptions)
+			GeneratePathing([]*Civilian{c})
+		} else {
+			logger.Printf("Civilian moved to %s\n", c.Path[c.PathPosition-1])
+		}
+	}
 }
