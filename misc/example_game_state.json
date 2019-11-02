@@ -1,0 +1,47 @@
+{
+    "game_id": 3,
+    "turn_number": 0,
+    "land": [
+        {
+            "id": 0,
+            "owner_farm_id": 6,
+            "infection_percent": 50
+        },
+        {
+            "id": 1,
+            "owner_farm_id": 6
+        }
+    ],
+    "players": [
+        {
+            "player_id": 3,
+            "farm_id": 6,
+            "cash": 10000,
+            "traders": [
+                {
+                    "location_id": 0,
+                    "is_malicious": true,
+                    "destination": 5
+                }
+            ],
+            "requests": [
+                {
+                    "type": "trader",
+                    "to_location": 0
+                }
+            ],
+            "ready": false
+        }
+    ],
+    "ai": [
+        {
+            "traders": [
+                {
+                    "location_id": 0,
+                    "is_malicious": true,
+                    "destination_id": 5
+                }
+            ]
+        }
+    ]
+}

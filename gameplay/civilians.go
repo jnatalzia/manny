@@ -1,6 +1,8 @@
 package gameplay
 
 import (
+	"math"
+
 	"../mapping"
 	"../types"
 	"../utils"
@@ -20,7 +22,7 @@ func GeneratePathing(civs []*Civilian) {
 		// Generate intent movement using pathing
 		civ.Path = civ.DetermineCivPath(&mapping.GameMap)
 	}
-	logger.Print("Intents Generated")
+	logger.Print("Intent Generated")
 }
 
 func MoveUnits(civs []*Civilian) {
@@ -88,7 +90,7 @@ func (civ *Civilian) DetermineCivPath(gameMap *types.Map) []string {
 	}
 
 	var shortestPath []string
-	shortestPathLen := 1000000
+	shortestPathLen := math.MaxInt64
 	for _, p := range possiblePaths {
 		pthLen := len(p)
 		if pthLen < shortestPathLen {

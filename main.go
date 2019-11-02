@@ -9,7 +9,9 @@ import (
 )
 
 func main() {
+	utils.InitLogger()
 	utils.InitRand()
+
 	mapping.InitHelperData()
 	gameplay.BuildCivs()
 	gameplay.GeneratePathing(gameplay.GetCivs())

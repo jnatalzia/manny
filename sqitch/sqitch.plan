@@ -1,0 +1,4 @@
+%syntax-version=1.0.0
+%project=manipulation
+
+table.initial_schemas 2019-10-28T00:46:21Z joeynatz <factoryreset@joeynatz> # Add in initial tables for tracking running games and game state

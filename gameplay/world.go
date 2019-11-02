@@ -7,11 +7,19 @@ import (
 var currentUnits []*Civilian
 var logger = utils.GetLogger()
 var locOptions = []string{
+	"0",
 	"1",
 	"2",
 	"3",
 	"4",
 	"5",
+	"6",
+	"7",
+	"8",
+	"9",
+	"10",
+	"11",
+	"12",
 }
 
 func BuildCivs() {

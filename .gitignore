@@ -3,3 +3,4 @@ secrets.txt
 tmp/*
 dist/*
 manipulation
+design/*

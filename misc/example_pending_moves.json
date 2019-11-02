@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1abey28",
+        "player_id": 3,
+        "move_type": "buy_trader",
+        "details": {
+            "is_malicious": false
+        }
+    },
+    {
+        "id": "1abey28",
+        "player_id": 3,
+        "move_type": "buy_crop",
+        "details": {
+            "amount": 100
+        }
+    },
+    {
+        "id": "1abey28",
+        "player_id": 3,
+        "move_type": "buy_land",
+        "details": {
+            "land_id": 0
+        }
+    },
+    {
+        "id": "1abey28",
+        "player_id": 3,
+        "move_type": "sell_land",
+        "details": {
+            "land_id": 0
+        }
+    },
+    {
+        "id": "1abey28",
+        "player_id": 3,
+        "move_type": "move_civ",
+        "details": {
+            "destination_id": 100
+        }
+    }
+]
