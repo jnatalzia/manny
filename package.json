@@ -1,0 +1,19 @@
+{
+  "name": "manipulation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cp websrc/views/index.html webpublic/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnatalzia/manny.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/jnatalzia/manny/issues"
+  },
+  "homepage": "https://github.com/jnatalzia/manny#readme"
+}

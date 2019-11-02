@@ -6,6 +6,7 @@ import (
 
 	"./gameplay"
 	"./utils"
+	"github.com/valyala/fasthttp"
 )
 
 // NOTE: If we are storing in json and updating one at a time,
@@ -36,7 +37,18 @@ func main() {
 		json.Unmarshal(bytes, &pa)
 	}
 
-	// startGameLoop()
+	staticHandler := fasthttp.FSHandler("./webpublic", 0)
+
+	requestHandler := func(ctx *fasthttp.RequestCtx) {
+		switch string(ctx.Path()) {
+		case "/":
+			staticHandler(ctx)
+		default:
+			ctx.Error("Unsupported path", fasthttp.StatusNotFound)
+		}
+	}
+
+	fasthttp.ListenAndServe(":8080", requestHandler)
 }
 
 func startGameLoop() {
