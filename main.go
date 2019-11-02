@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"./gameplay"
@@ -40,11 +41,21 @@ func main() {
 	staticHandler := fasthttp.FSHandler("./webpublic", 0)
 
 	requestHandler := func(ctx *fasthttp.RequestCtx) {
-		switch string(ctx.Path()) {
-		case "/":
-			staticHandler(ctx)
+		pth := string(ctx.Path())
+		switch pth {
 		default:
-			ctx.Error("Unsupported path", fasthttp.StatusNotFound)
+			splitPth := strings.Split(pth, ".")
+			if len(splitPth) > 1 {
+				ext := splitPth[1]
+				if strings.Contains(ext, "css") {
+					ctx.SetContentType("text/css")
+				} else if strings.Contains(ext, "js") {
+					ctx.SetContentType("application/javascript")
+				} else if strings.Contains(ext, "html") {
+					ctx.SetContentType("text/html")
+				}
+			}
+			staticHandler(ctx)
 		}
 	}
 

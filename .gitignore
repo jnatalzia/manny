@@ -5,3 +5,4 @@ dist/*
 manipulation
 design/*
 webpublic/*
+node_modules/*
