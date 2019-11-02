@@ -49,4 +49,5 @@ type BuyLandAction struct {
 	ID       string `json:"id"`
 	PlayerID int    `json:"player_id"`
 	LandID   int    `json:"land_id"`
+	BidPrice int    `json:"bid_price"`
 }

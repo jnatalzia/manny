@@ -24,6 +24,6 @@ func getLandByID(tiles *[]LandTile, id int) *LandTile {
 	return &LandTile{}
 }
 
-func getCostForLand(land *LandTile) int {
+func getBaseCostForLand(land *LandTile) int {
 	return (land.Crop * cropCost) + (land.InfectedCrop * infectedCropCost)
 }

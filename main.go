@@ -2,13 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"./gameplay"
 	"./utils"
 )
 
+// NOTE: If we are storing in json and updating one at a time,
+// we need a queue per game to host move order
+// To ensure we do not overwrite existing JSON
 func main() {
 	utils.ConnectToDB()
 	utils.InitLogger()
@@ -32,14 +34,6 @@ func main() {
 		bytes = []byte(pendingMoveStr)
 		var pa gameplay.Actions
 		json.Unmarshal(bytes, &pa)
-
-		fmt.Println(pa.BuyCrop)
-
-		possibleActions := gameplay.DeterminePossiblePlayerActions(&gs, &pa, 0)
-
-		fmt.Println("**********")
-		fmt.Println(possibleActions)
-		fmt.Println("**********")
 	}
 
 	// startGameLoop()

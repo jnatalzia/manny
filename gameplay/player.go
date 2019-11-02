@@ -1,8 +1,6 @@
 package gameplay
 
 import (
-	"fmt"
-
 	"../utils"
 )
 
@@ -13,8 +11,23 @@ type GamePlayer struct {
 	TurnReady bool         `json:"ready"`
 }
 
+type PossibleMoves struct {
+	landTilesForPurchase []int `json:"land_tiles_for_purchase"`
+}
+
+func getPlayerByID(plyrs *[]GamePlayer, id int) *GamePlayer {
+	for _, p := range *plyrs {
+		if p.ID == id {
+			return &p
+		}
+	}
+	utils.Logger.Panicln("No land found with requested ID")
+	return &GamePlayer{}
+}
+
 // Returns adjusted player money based on actions in queue
-func determinePlayerMoneyAfterActions(gs *GameState, pendingActions *Actions, plyr *GamePlayer) int {
+func determinePlayerStateAfterActions(gs *GameState, pendingActions *Actions, plyr *GamePlayer) (int, []int) {
+	var boughtLandIDs []int
 	currentMoney := plyr.Cash
 	traders := gs.Traders
 	for _, act := range pendingActions.BuyCrop {
@@ -26,9 +39,10 @@ func determinePlayerMoneyAfterActions(gs *GameState, pendingActions *Actions, pl
 	}
 	for _, act := range pendingActions.BuyLand {
 		if act.PlayerID == plyr.ID {
-			landCost := getCostForLand(getLandByID(&gs.LandTiles, act.LandID))
+			landCost := act.BidPrice
 			utils.Logger.Printf("Subtracting money for bought land: %d\n", landCost)
 			currentMoney -= landCost
+			boughtLandIDs = append(boughtLandIDs, act.LandID)
 		}
 	}
 	for _, act := range pendingActions.CreateTrader {
@@ -39,18 +53,43 @@ func determinePlayerMoneyAfterActions(gs *GameState, pendingActions *Actions, pl
 	}
 	// gs.
 	utils.Logger.Printf("Total remaining money after current actions resolved: %d\n", currentMoney)
-	return currentMoney
+	return currentMoney, boughtLandIDs
 }
 
-func DeterminePossiblePlayerActions(gs *GameState, pendingActions *Actions, pid int) *Actions {
-	var player GamePlayer
-	for _, plyr := range gs.Players {
-		if plyr.ID == pid {
-			player = plyr
-			break
+func PlayerCanBuyLand(gs *GameState, pendingActions *Actions, plyr *GamePlayer, action *BuyLandAction) bool {
+	availableFunds, unavailableLand := determinePlayerStateAfterActions(gs, pendingActions, plyr)
+	ownedLand := []int{}
+
+	for _, l := range gs.LandTiles {
+		if l.OwnerID == plyr.ID {
+			ownedLand = append(ownedLand, l.ID)
 		}
 	}
-	availableFunds := determinePlayerMoneyAfterActions(gs, pendingActions, &player)
-	fmt.Printf("Available funds for player after action: %d\n", availableFunds)
-	return &Actions{}
+
+	return action.BidPrice <= availableFunds && !utils.IntInSlice(action.LandID, unavailableLand) && !utils.IntInSlice(action.LandID, ownedLand)
+}
+
+func PlayerCanBuyTrader(gs *GameState, pendingActions *Actions, action *CreateTraderAction) bool {
+	player := getPlayerByID(&gs.Players, action.PlayerID)
+	availableFunds, _ := determinePlayerStateAfterActions(gs, pendingActions, player)
+	return traderCost <= availableFunds
+}
+
+func PlayerCanInfectCrop(gs *GameState, action *InfectCropAction) bool {
+	lnd := getLandByID(&gs.LandTiles, action.LandID)
+	return lnd.Crop >= action.Amount && action.PlayerID == lnd.OwnerID
+}
+
+func PlayerCanBuyCrop(gs *GameState, pendingActions *Actions, action *BuyCropAction) bool {
+	plyr := getPlayerByID(&gs.Players, action.PlayerID)
+	availableFunds, _ := determinePlayerStateAfterActions(gs, pendingActions, plyr)
+	tCost := getCostForTraderCrop(getTraderByID(&gs.Traders, action.TraderID))
+	lnd := getLandByID(&gs.LandTiles, action.LandID)
+
+	return tCost <= availableFunds && lnd.OwnerID == plyr.ID
+}
+
+func PlayerCanRouteTrader(gs *GameState, tid string, plyrid int) bool {
+	t := getTraderByID(&gs.Traders, tid)
+	return t.OwnerID == plyrid
 }

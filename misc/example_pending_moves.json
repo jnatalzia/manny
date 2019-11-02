@@ -36,7 +36,8 @@
         {
             "id": "klm",
             "player_id": 0,
-            "land_id": 1
+            "land_id": 1,
+            "bid_price": 400
         }
     ]
 }
