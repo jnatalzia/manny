@@ -1,42 +1,42 @@
-[
-    {
-        "id": "1abey28",
-        "player_id": 3,
-        "move_type": "buy_trader",
-        "details": {
-            "is_malicious": false
+{
+    "buy_crop": [
+        {
+            "id": "abc",
+            "player_id": 0,
+            "land_id": 0,
+            "trader_id": "ab34" 
         }
-    },
-    {
-        "id": "1abey28",
-        "player_id": 3,
-        "move_type": "buy_crop",
-        "details": {
-            "amount": 100
+    ],
+    "create_trader": [
+        {
+            "id": "def",
+            "player_id": 1,
+            "safe_crop": 50,
+            "infected_crop": 50,
+            "land_id": 4
         }
-    },
-    {
-        "id": "1abey28",
-        "player_id": 3,
-        "move_type": "buy_land",
-        "details": {
+    ],
+    "route_trader": [
+        {
+            "id": "123",
+            "player_id": 0,
+            "trader_id": "ab34",
+            "destination_id": 6
+        }
+    ],
+    "infect_crop": [
+        {
+            "id": "hij",
+            "player_id": 2,
+            "amount": 10,
             "land_id": 0
         }
-    },
-    {
-        "id": "1abey28",
-        "player_id": 3,
-        "move_type": "sell_land",
-        "details": {
-            "land_id": 0
+    ],
+    "buy_land": [
+        {
+            "id": "klm",
+            "player_id": 0,
+            "land_id": 1
         }
-    },
-    {
-        "id": "1abey28",
-        "player_id": 3,
-        "move_type": "move_civ",
-        "details": {
-            "destination_id": 100
-        }
-    }
-]
+    ]
+}

@@ -15,23 +15,31 @@ func main() {
 	utils.InitRand()
 
 	db := utils.DBConn
-	rows, err := db.Query("SELECT game_state FROM games LIMIT 1;")
+	rows, err := db.Query("SELECT game_state, pending_moves FROM games LIMIT 1;")
 
 	if err != nil {
 		utils.Logger.Panicf("There was an issue connecting to the DB %v\n", err)
 	}
-
 	for rows.Next() {
-		var jsonStr string
-		rows.Scan(&jsonStr)
+		var gsStr string
+		var pendingMoveStr string
+		rows.Scan(&gsStr, &pendingMoveStr)
 
-		bytes := []byte(jsonStr)
+		bytes := []byte(gsStr)
 		var gs gameplay.GameState
 		json.Unmarshal(bytes, &gs)
 
-		for _, ply := range gs.Players {
-			fmt.Printf("Player %d ready state %t\n", ply.ID, ply.TurnReady)
-		}
+		bytes = []byte(pendingMoveStr)
+		var pa gameplay.Actions
+		json.Unmarshal(bytes, &pa)
+
+		fmt.Println(pa.BuyCrop)
+
+		possibleActions := gameplay.DeterminePossiblePlayerActions(&gs, &pa, 0)
+
+		fmt.Println("**********")
+		fmt.Println(possibleActions)
+		fmt.Println("**********")
 	}
 
 	// startGameLoop()
