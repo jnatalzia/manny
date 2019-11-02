@@ -56,11 +56,3 @@ var GameMap types.Map = map[string]types.Location{
 		Neighbors: []string{"10"},
 	},
 }
-
-var LocIDs []string
-
-func InitHelperData() {
-	for k := range GameMap {
-		LocIDs = append(LocIDs, k)
-	}
-}

@@ -14,7 +14,7 @@ var (
 	magentaFg = color.New(color.FgMagenta)
 )
 
-var logger = log.New(os.Stdout, "", log.Lshortfile)
+var Logger = log.New(os.Stdout, "", log.Lshortfile)
 
 func InitLogger() {
 	outWrite := marker.NewStdoutMarker()
@@ -26,9 +26,5 @@ func InitLogger() {
 
 	outWrite.AddRules(markRules)
 
-	logger.SetOutput(outWrite)
-}
-
-func GetLogger() *log.Logger {
-	return logger
+	Logger.SetOutput(outWrite)
 }

@@ -5,7 +5,7 @@ import (
 )
 
 var currentUnits []*Civilian
-var logger = utils.GetLogger()
+var logger = utils.Logger
 var locOptions = []string{
 	"0",
 	"1",
