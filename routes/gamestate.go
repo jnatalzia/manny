@@ -82,26 +82,25 @@ func GamestateForPlayer(ctx *fasthttp.RequestCtx) {
 	for _, lnd := range gs.LandTiles {
 		if plyrID == lnd.OwnerID {
 			playerLand = append(playerLand, lnd)
-		} else {
-			filteredLand = append(filteredLand, LandTileRes{
-				ID:       lnd.ID,
-				OwnerID:  lnd.OwnerID,
-				BaseCost: gameplay.GetBaseCostForLand(&lnd),
-			})
 		}
+		filteredLand = append(filteredLand, LandTileRes{
+			ID:       lnd.ID,
+			OwnerID:  lnd.OwnerID,
+			BaseCost: gameplay.GetBaseCostForLand(&lnd),
+		})
+
 	}
 
 	for _, t := range gs.Traders {
 		if plyrID == t.OwnerID {
 			playerTraders = append(playerTraders, t)
-		} else {
-			filteredTraders = append(filteredTraders, TraderRes{
-				ID:            t.ID,
-				LocationID:    t.LocationID,
-				DestinationID: t.DestinationID,
-				Cost:          gameplay.GetCostForTraderCrop(&t),
-			})
 		}
+		filteredTraders = append(filteredTraders, TraderRes{
+			ID:            t.ID,
+			LocationID:    t.LocationID,
+			DestinationID: t.DestinationID,
+			Cost:          gameplay.GetCostForTraderCrop(&t),
+		})
 	}
 
 	pRes := CurrentPlayerRes{
