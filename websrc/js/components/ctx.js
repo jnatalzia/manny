@@ -1,8 +1,9 @@
 export let ctx;
 export let canvas;
 
-export const CANVAS_WIDTH = 500;
-export const CANVAS_HEIGHT = 500;
+const FOOTER_HEIGHT = 75;
+export const CANVAS_WIDTH = window.innerWidth;
+export const CANVAS_HEIGHT = window.innerHeight - FOOTER_HEIGHT;
 export const DEVICE_DPR = window.devicePixelRatio || 1;
 
 window.addEventListener('load', () => {

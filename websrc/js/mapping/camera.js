@@ -1,5 +1,9 @@
-import { KEY_MAP } from '../components/controls';
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../components/ctx';
+import {
+    KEY_MAP,
+    ZOOM_IN_BTN_KEY,
+    ZOOM_OUT_BTN_KEY,
+    getMouseMovement
+} from '../components/controls';
 
 const CAMERA_PAN_SPEED = 3;
 
@@ -30,11 +34,18 @@ export function updateCamera() {
     }
 
     // W - zoom in
-    if (KEY_MAP[87]) {
+    if (KEY_MAP[87] || KEY_MAP[ZOOM_IN_BTN_KEY]) {
         camera.zoomLevel = Math.min(4, camera.zoomLevel + 0.1);
     }
     // S - zoom out
-    if (KEY_MAP[83]) {
+    if (KEY_MAP[83] || KEY_MAP[ZOOM_OUT_BTN_KEY]) {
         camera.zoomLevel = Math.max(1, camera.zoomLevel - 0.1);
+    }
+
+    // Check mouse movement
+    let mouseMvmnt = getMouseMovement();
+    if (mouseMvmnt.x || mouseMvmnt.y) {
+        camera.center.x -= mouseMvmnt.x / camera.zoomLevel;
+        camera.center.y -= mouseMvmnt.y / camera.zoomLevel;
     }
 }
