@@ -20,8 +20,9 @@ type TraderRes struct {
 
 // Should we include player cash here?
 type PlayerRes struct {
-	ID        int  `json:"id"`
-	TurnReady bool `json:"ready"`
+	ID        int    `json:"id"`
+	TurnReady bool   `json:"ready"`
+	LandColor string `json:"land_color"`
 }
 
 type CurrentPlayerRes struct {
@@ -30,6 +31,7 @@ type CurrentPlayerRes struct {
 	TurnReady bool                  `json:"ready"`
 	LandTiles []gameplay.LandTile   `json:"land_tiles"`
 	Traders   []gameplay.GameTrader `json:"traders"`
+	LandColor string                `json:"land_color"`
 }
 
 type LandTileRes struct {
@@ -113,10 +115,12 @@ func GamestateForPlayer(ctx *fasthttp.RequestCtx) {
 		if plyrID == p.ID {
 			pRes.Cash = p.Cash
 			pRes.TurnReady = p.TurnReady
+			pRes.LandColor = p.LandColor
 		} else {
 			otherPlyrs = append(otherPlyrs, PlayerRes{
 				ID:        p.ID,
 				TurnReady: p.TurnReady,
+				LandColor: p.LandColor,
 			})
 		}
 	}

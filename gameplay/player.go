@@ -9,10 +9,11 @@ type GamePlayer struct {
 	Cash      int          `json:"cash"`
 	Traders   []GameTrader `json:"traders"`
 	TurnReady bool         `json:"ready"`
+	LandColor string       `json:"land_color"`
 }
 
 type PossibleMoves struct {
-	landTilesForPurchase []int `json:"land_tiles_for_purchase"`
+	LandTilesForPurchase []int `json:"land_tiles_for_purchase"`
 }
 
 func getPlayerByID(plyrs *[]GamePlayer, id int) *GamePlayer {

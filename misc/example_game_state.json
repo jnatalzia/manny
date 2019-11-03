@@ -85,22 +85,26 @@
         {
             "id": 0,
             "cash": 10000,
-            "ready": false
+            "ready": false,
+            "land_color": "#D24858"
         },
         {
             "id": 1,
             "cash": 10000,
-            "ready": false
+            "ready": false,
+            "land_color": "#EA8676"
         },
         {
             "id": 2,
             "cash": 10000,
-            "ready": false
+            "ready": false,
+            "land_color": "#EAB05E"
         },
         {
             "id": 3,
             "cash": 10000,
-            "ready": false
+            "ready": false,
+            "land_color": "#FDEECD"
         }
     ],
     "traders": [

@@ -14,5 +14,6 @@ export function update(ctx) {
     updateGame(ctx);
     drawGame(ctx);
 
+    // redraw
     window.requestAnimationFrame(update.bind(null, ctx));
 }
