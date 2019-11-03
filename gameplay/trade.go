@@ -27,6 +27,6 @@ func getTraderByID(traders *[]GameTrader, id string) *GameTrader {
 	return &GameTrader{}
 }
 
-func getCostForTraderCrop(trader *GameTrader) int {
+func GetCostForTraderCrop(trader *GameTrader) int {
 	return (trader.SafeCrop + trader.InfectedCrop) * traderCropCost
 }

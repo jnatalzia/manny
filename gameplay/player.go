@@ -32,7 +32,7 @@ func determinePlayerStateAfterActions(gs *GameState, pendingActions *Actions, pl
 	traders := gs.Traders
 	for _, act := range pendingActions.BuyCrop {
 		if act.PlayerID == plyr.ID {
-			cropCost := getCostForTraderCrop(getTraderByID(&traders, act.TraderID))
+			cropCost := GetCostForTraderCrop(getTraderByID(&traders, act.TraderID))
 			utils.Logger.Printf("Subtracting money for bought crop: %d\n", cropCost)
 			currentMoney -= cropCost
 		}
@@ -83,7 +83,7 @@ func PlayerCanInfectCrop(gs *GameState, action *InfectCropAction) bool {
 func PlayerCanBuyCrop(gs *GameState, pendingActions *Actions, action *BuyCropAction) bool {
 	plyr := getPlayerByID(&gs.Players, action.PlayerID)
 	availableFunds, _ := determinePlayerStateAfterActions(gs, pendingActions, plyr)
-	tCost := getCostForTraderCrop(getTraderByID(&gs.Traders, action.TraderID))
+	tCost := GetCostForTraderCrop(getTraderByID(&gs.Traders, action.TraderID))
 	lnd := getLandByID(&gs.LandTiles, action.LandID)
 
 	return tCost <= availableFunds && lnd.OwnerID == plyr.ID

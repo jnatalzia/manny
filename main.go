@@ -1,11 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"strings"
 	"time"
 
 	"./gameplay"
+	"./routes"
 	"./utils"
 	"github.com/valyala/fasthttp"
 )
@@ -18,31 +18,13 @@ func main() {
 	utils.InitLogger()
 	utils.InitRand()
 
-	db := utils.DBConn
-	rows, err := db.Query("SELECT game_state, pending_moves FROM games LIMIT 1;")
-
-	if err != nil {
-		utils.Logger.Panicf("There was an issue connecting to the DB %v\n", err)
-	}
-	for rows.Next() {
-		var gsStr string
-		var pendingMoveStr string
-		rows.Scan(&gsStr, &pendingMoveStr)
-
-		bytes := []byte(gsStr)
-		var gs gameplay.GameState
-		json.Unmarshal(bytes, &gs)
-
-		bytes = []byte(pendingMoveStr)
-		var pa gameplay.Actions
-		json.Unmarshal(bytes, &pa)
-	}
-
 	staticHandler := fasthttp.FSHandler("./webpublic", 0)
 
 	requestHandler := func(ctx *fasthttp.RequestCtx) {
 		pth := string(ctx.Path())
 		switch pth {
+		case "/gamestate":
+			routes.GamestateForPlayer(ctx)
 		default:
 			splitPth := strings.Split(pth, ".")
 			if len(splitPth) > 1 {
