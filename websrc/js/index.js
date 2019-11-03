@@ -1,8 +1,9 @@
-import { ctx } from './components/ctx';
 import '../css/main.scss';
-
-console.log(ctx);
+import { ctx } from './components/ctx';
+import { update } from './gameloop';
+import { initControls } from './components/controls';
 
 window.addEventListener('load', () => {
-    console.log(ctx);
+    initControls();
+    update(ctx);
 });
