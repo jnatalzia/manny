@@ -2,6 +2,7 @@ import mapJSON from './map.json';
 import { camera } from './camera.js';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../components/ctx.js';
 import { currentGamestate } from '../components/gamestate.js';
+import { doesOverlap } from '../utils/intersection.js';
 
 export const MAP_WIDTH = 500;
 
@@ -28,6 +29,29 @@ function drawMetadata(land, ctx) {
         startingCoords.y + 50
     );
     ctx.restore();
+}
+
+export function getTileAtMousePoint(pt) {
+    // let adjustedPT =
+    let zCenterX = camera.center.x;
+    let zCenterY = camera.center.y;
+
+    let box = {
+        x: zCenterX,
+        y: zCenterY,
+        size: 1
+    };
+
+    let overlap;
+    for (let i = 0; i < mapJSON.length; i++) {
+        if (doesOverlap(box, mapJSON[i])) {
+            overlap = mapJSON[i];
+        }
+    }
+    if (!overlap) {
+        return;
+    }
+    return overlap.landID;
 }
 
 export function drawMap(ctx) {

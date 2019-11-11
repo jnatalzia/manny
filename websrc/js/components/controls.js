@@ -14,7 +14,6 @@ export function initControls() {
     initKeyControls();
     initUIControls();
     initTouchControls();
-    console.log('controls initialized');
 }
 
 let mouseDiff = { x: 0, y: 0 };

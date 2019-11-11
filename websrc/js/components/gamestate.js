@@ -25,6 +25,8 @@ export function initGamestate() {
             currentGamestate.players[p.id] = p;
         }, {});
 
+        currentGamestate.playerID = gs.current_player.id;
+
         currentGamestate.players[gs.current_player.id] = Object.assign(
             gs.current_player,
             {

@@ -7,7 +7,6 @@ import {
     didClickThisCycle
 } from '../components/controls';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../components/ctx';
-import { MAP_WIDTH } from './map';
 
 const CAMERA_PAN_SPEED = 3;
 
@@ -52,22 +51,12 @@ export function updateCamera() {
         camera.center.x -= mouseMvmnt.x / camera.zoomLevel;
         camera.center.y -= mouseMvmnt.y / camera.zoomLevel;
     }
-
-    if (didClickThisCycle()) {
-        moveCameraToFocus(getClickPoint());
-    }
 }
 
 export function moveCameraToFocus(point) {
-    // let topLeftOfMap = camera.center.x - CANVAS_WIDTH / 2;
-    // let topOfMap = camera.center.y - CANVAS_HEIGHT / 2;
-    // camera.center.x = point.x + topLeftOfMap;
-    // camera.center.y = point.y + topOfMap;
     let mouseXDiff = (point.x - CANVAS_WIDTH / 2) / camera.zoomLevel;
     let mouseYDiff = (point.y - CANVAS_HEIGHT / 2) / camera.zoomLevel;
-    console.log('mouse diff: ' + mouseXDiff, mouseYDiff);
 
     camera.center.x += mouseXDiff;
     camera.center.y += mouseYDiff;
-    console.log('moving to : ' + camera.center.x + ' ' + camera.center.y);
 }
