@@ -8,6 +8,7 @@ export const ZOOM_OUT_BTN_KEY = 'ZOOM_OUT_BTN';
 const mouseDownEvts = ['touchstart', 'mousedown'];
 const mouseUpEvts = ['touchend', 'mouseup'];
 const mouseMoveEvts = ['touchmove', 'mousemove'];
+let lastClick;
 
 export function initControls() {
     initKeyControls();
@@ -17,6 +18,7 @@ export function initControls() {
 }
 
 let mouseDiff = { x: 0, y: 0 };
+let didClick = false;
 
 export function getMouseMovement() {
     let mvment = Object.assign({}, mouseDiff);
@@ -24,15 +26,31 @@ export function getMouseMovement() {
     return mvment;
 }
 
+export function didClickThisCycle() {
+    return didClick;
+}
+
+export function getClickPoint() {
+    didClick = false;
+    return getPosFromEvt(lastClick);
+}
+
+function handleMapClick(e) {
+    didClick = true;
+    lastClick = e;
+}
+
 function initTouchControls() {
     const c = document.querySelector('#canvas');
 
     let lastMousePos = { x: -1, y: -1 };
     let dragging = false;
+    let dragStartTime;
 
     const mouseDown = e => {
         e.stopPropagation();
         e.preventDefault();
+        dragStartTime = Date.now();
         dragging = true;
         let { x, y } = getPosFromEvt(e);
         lastMousePos = { x, y };
@@ -42,6 +60,10 @@ function initTouchControls() {
         e.stopPropagation();
         e.preventDefault();
         dragging = false;
+        if (Date.now() - dragStartTime < 150) {
+            // treat as click
+            handleMapClick(e);
+        }
         mouseDiff = { x: 0, y: 0 };
         lastMousePos = { x: -1, y: -1 };
     };
@@ -83,8 +105,8 @@ function getPosFromEvt(e) {
         xPos = t.screenX;
         yPos = t.screenY;
     } else {
-        xPos = e.pageX;
-        yPos = e.pageY;
+        xPos = e.clientX;
+        yPos = e.clientY;
     }
 
     return {

@@ -3,6 +3,8 @@ import { camera } from './camera.js';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../components/ctx.js';
 import { currentGamestate } from '../components/gamestate.js';
 
+export const MAP_WIDTH = 500;
+
 function getLandColorForID(id) {
     let owner = currentGamestate.players[currentGamestate.land[id].owner_id];
     return owner ? owner.land_color : '#ddd';
